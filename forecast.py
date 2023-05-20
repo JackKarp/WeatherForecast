@@ -64,7 +64,7 @@ def forecast():
     rainForcast = str(data_forecast['properties']['periods'].pop(0)['probabilityOfPrecipitation']['value'])
     print(rainForcast)
     try:
-        if int(rainForcast) > 70:
+        if int(rainForcast) > 60:
             SendNotification(2, rainForcast)
     except ValueError:
         print('')
