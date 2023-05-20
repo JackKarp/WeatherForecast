@@ -22,19 +22,20 @@ def forecast():
     #parse to forecast
     forecastlink = data_json['properties']['forecast']
 
-    #print(forecastlink)
+    #pull json from weather.gov
     fullforecast = urlopen(forecastlink)
     data_forecast = json.loads(fullforecast.read())
 
-    shortForecast = str(data_forecast['properties']['periods'].pop(0)['shortForecast'])
-    forecast = []
+        shortForecast = str(data_forecast['properties']['periods'].pop(0)['shortForecast'])
+        forecast = []
 
-    #forecastval = open('C:/Users/jacka/Documents/WeatherForecast/forecastValues.txt', 'w+')
+    #set old value to forecast
     with open('./forecastValues.txt', 'r') as forecastval:
         forecast = forecastval.read().split('*')
         while len(forecast) > 1:
             forecast.pop(0)
 
+    #send new value to file
     with open('./forecastValues.txt', 'w') as forecastval:
         forecast.append(shortForecast)
         print(forecast)
@@ -52,7 +53,21 @@ def forecast():
             SendNotification(forecast)
         else:
             print(forecastval.read())
-            
+
+
+    #==========================RAIN TEST===============================
+
+    print(forecastlink)
+
+    rainForcast = str(data_forecast['properties']['periods'].pop(0)['probabilityOfPrecipitation']['value'])
+    print(rainForcast)
+    try:
+        if int(rainForcast) > 70:
+            SendNotification(rainForcast)
+    except ValueError:
+        print('')
+
+
 #schedule the function
 schedule.every(10).minutes.do(forecast())
 
