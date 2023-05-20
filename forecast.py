@@ -26,8 +26,8 @@ def forecast():
     fullforecast = urlopen(forecastlink)
     data_forecast = json.loads(fullforecast.read())
 
-        shortForecast = str(data_forecast['properties']['periods'].pop(0)['shortForecast'])
-        forecast = []
+    shortForecast = str(data_forecast['properties']['periods'].pop(0)['shortForecast'])
+    forecast = []
 
     #set old value to forecast
     with open('./forecastValues.txt', 'r') as forecastval:
