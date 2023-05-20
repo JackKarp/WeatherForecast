@@ -25,12 +25,12 @@ shortForecast = str(data_forecast['properties']['periods'].pop(0)['shortForecast
 forecast = []
 
 #forecastval = open('C:/Users/jacka/Documents/WeatherForecast/forecastValues.txt', 'w+')
-with open('C:/Users/jacka/Documents/WeatherForecast/forecastValues.txt', 'r') as forecastval:
+with open('./forecastValues.txt', 'r') as forecastval:
     forecast = forecastval.read().split('*')
     while len(forecast) > 1:
         forecast.pop(0)
 
-with open('C:/Users/jacka/Documents/WeatherForecast/forecastValues.txt', 'w') as forecastval:
+with open('./forecastValues.txt', 'w') as forecastval:
     forecast.append(shortForecast)
     print(forecast)
     if len(forecast) == 1:
@@ -41,7 +41,7 @@ with open('C:/Users/jacka/Documents/WeatherForecast/forecastValues.txt', 'w') as
 
 
 #compare old and new
-with open('C:/Users/jacka/Documents/WeatherForecast/forecastValues.txt', 'r') as forecastval:
+with open('./forecastValues.txt', 'r') as forecastval:
     forecast = forecastval.read().split('*')
     if forecast[0] != forecast[1]:
         #do thing
