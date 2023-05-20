@@ -6,8 +6,6 @@ import time
 
 from SendNotification import SendNotification
 
-#define all of it as a function to schedule it
-
 url = "https://api.weather.gov/points/32.7432,-117.1736"
     
 # store the response of URL
@@ -32,6 +30,7 @@ forecast = []
 
 SendNotification(3,shortForecast)
 
+#define all of it as a function to schedule it
 def forecast():
     #set old value to forecast
     with open('./forecastValues.txt', 'r') as forecastval:
