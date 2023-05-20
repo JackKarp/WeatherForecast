@@ -4,7 +4,7 @@ import os
 
 from SendNotification import SendNotification
 
-url = "https://api.weather.gov/points/32.7432,-117.1736"
+url = "https://api.weather.gov/points/37.3601,-117.0589"
   
 # store the response of URL
 response = urlopen(url)
@@ -19,19 +19,20 @@ data_json = json.loads(response.read())
 #parse to forecast
 forecastlink = data_json['properties']['forecast']
 
-#print(forecastlink)
+#pull json from weather.gov
 fullforecast = urlopen(forecastlink)
 data_forecast = json.loads(fullforecast.read())
 
 shortForecast = str(data_forecast['properties']['periods'].pop(0)['shortForecast'])
 forecast = []
 
-#forecastval = open('C:/Users/jacka/Documents/WeatherForecast/forecastValues.txt', 'w+')
+#set old value to forecast
 with open('./forecastValues.txt', 'r') as forecastval:
     forecast = forecastval.read().split('*')
     while len(forecast) > 1:
         forecast.pop(0)
 
+#send new value to file
 with open('./forecastValues.txt', 'w') as forecastval:
     forecast.append(shortForecast)
     print(forecast)
@@ -40,12 +41,21 @@ with open('./forecastValues.txt', 'w') as forecastval:
     else:
         forecastval.write(forecast[0]+'*'+forecast[1])
 
-
-
-#compare old and new
+#compare old and new and run send notification
 with open('./forecastValues.txt', 'r') as forecastval:
     forecast = forecastval.read().split('*')
-    if forecast[0] == forecast[1]:
+    if forecast[0] != forecast[1]:
         SendNotification(forecast)
     else:
         print(forecastval.read())
+
+
+
+#==========================RAIN TEST===============================
+
+print(forecastlink)
+
+rainForcast = str(data_forecast['properties']['periods'].pop(0)['probabilityOfPrecipitation']['value'])
+print(rainForcast)
+if rainForcast > 70:
+    SendNotification('rain')
