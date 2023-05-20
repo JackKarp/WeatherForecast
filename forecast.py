@@ -2,6 +2,8 @@ from urllib.request import urlopen
 import json
 import os
 
+from SendNotification import SendNotification
+
 url = "https://api.weather.gov/points/32.7432,-117.1736"
   
 # store the response of URL
@@ -44,7 +46,7 @@ with open('./forecastValues.txt', 'w') as forecastval:
 with open('./forecastValues.txt', 'r') as forecastval:
     forecast = forecastval.read().split('*')
     if forecast[0] != forecast[1]:
-        #do thing
+        SendNotification(forecast)
         print('yeet')
     else:
         print(forecastval.read())
