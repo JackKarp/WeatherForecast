@@ -58,4 +58,4 @@ print(forecastlink)
 rainForcast = str(data_forecast['properties']['periods'].pop(0)['probabilityOfPrecipitation']['value'])
 print(rainForcast)
 if rainForcast > 70:
-    SendNotification('rain')
+    SendNotification(rainForcast)
