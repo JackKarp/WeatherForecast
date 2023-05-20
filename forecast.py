@@ -4,7 +4,7 @@ import os
 
 from SendNotification import SendNotification
 
-url = "https://api.weather.gov/points/37.3601,-117.0589"
+url = "https://api.weather.gov/points/32.7157,-117.1611"
   
 # store the response of URL
 response = urlopen(url)
@@ -57,5 +57,8 @@ print(forecastlink)
 
 rainForcast = str(data_forecast['properties']['periods'].pop(0)['probabilityOfPrecipitation']['value'])
 print(rainForcast)
-if rainForcast > 70:
-    SendNotification(rainForcast)
+try:
+    if int(rainForcast) > 70:
+        SendNotification(rainForcast)
+except ValueError:
+    print('')
