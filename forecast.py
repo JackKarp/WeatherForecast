@@ -5,30 +5,34 @@ import schedule
 import time
 
 from SendNotification import SendNotification
+
 #define all of it as a function to schedule it
+
+url = "https://api.weather.gov/points/32.7432,-117.1736"
+    
+# store the response of URL
+response = urlopen(url)
+
+# storing the JSON response 
+# from url in data
+data_json = json.loads(response.read())
+
+# print the json response
+#print(data_json)
+
+#parse to forecast
+forecastlink = data_json['properties']['forecast']
+
+#pull json from weather.gov
+fullforecast = urlopen(forecastlink)
+data_forecast = json.loads(fullforecast.read())
+
+shortForecast = str(data_forecast['properties']['periods'].pop(0)['shortForecast'])
+forecast = []
+
+SendNotification(3,shortForecast)
+
 def forecast():
-    url = "https://api.weather.gov/points/32.7432,-117.1736"
-    
-    # store the response of URL
-    response = urlopen(url)
-    
-    # storing the JSON response 
-    # from url in data
-    data_json = json.loads(response.read())
-    
-    # print the json response
-    #print(data_json)
-
-    #parse to forecast
-    forecastlink = data_json['properties']['forecast']
-
-    #pull json from weather.gov
-    fullforecast = urlopen(forecastlink)
-    data_forecast = json.loads(fullforecast.read())
-
-        shortForecast = str(data_forecast['properties']['periods'].pop(0)['shortForecast'])
-        forecast = []
-
     #set old value to forecast
     with open('./forecastValues.txt', 'r') as forecastval:
         forecast = forecastval.read().split('*')
@@ -44,13 +48,11 @@ def forecast():
         else:
             forecastval.write(forecast[0]+'*'+forecast[1])
 
-
-
     #compare old and new
     with open('./forecastValues.txt', 'r') as forecastval:
         forecast = forecastval.read().split('*')
-        if forecast[0] == forecast[1]:
-            SendNotification(forecast)
+        if forecast[0] != forecast[1]:
+            SendNotification(1, forecast)
         else:
             print(forecastval.read())
 
@@ -63,13 +65,12 @@ def forecast():
     print(rainForcast)
     try:
         if int(rainForcast) > 70:
-            SendNotification(rainForcast)
+            SendNotification(2, rainForcast)
     except ValueError:
         print('')
 
-
 #schedule the function
-schedule.every(10).minutes.do(forecast())
+schedule.every(10).minutes.do(forecast)
 
 #check for scheduled functions every minute
 while True:
