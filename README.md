@@ -7,3 +7,9 @@ Parses the data and gives important notifications based on changes in weather an
 # Dependencies
 plyer version 2.1.0
 schedule version 1.2.0
+
+To install, use:
+
+```pip install plyer```
+
+```pip install schedule```
